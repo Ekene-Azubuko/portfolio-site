@@ -43,18 +43,6 @@ HOBBIES = [
 
 EXPERIENCES = [
     {
-        'title': 'Student',
-        'company': 'Minerva University',
-        'date': '2023 - Present',
-        'image': './static/img/mu-image.png',
-        'alt': 'Minerva University',
-        'description': [
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-            'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.'
-        ],
-        'reverse': False
-    },
-    {
         'title': 'Radio Frequency Test Engineer',
         'company': 'Underwriters Laboratories',
         'date': 'April 2024 - August 2024',
@@ -64,7 +52,7 @@ EXPERIENCES = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.'
         ],
-        'reverse': True
+        'reverse': False
     },
     {
         'title': 'Software Engineering Intern',
@@ -76,9 +64,17 @@ EXPERIENCES = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.'
         ],
-        'reverse': False
+        'reverse': True
     }
 ]
+
+EDUCATION = {
+    'school_name': 'Minerva University',
+    'degree': 'Bachelor\'s Degree in Computer Science',
+    'date': '2023 - Present',
+    'badge_image': '/static/img/mu-image.png',
+    'description': 'I am currently enrolled at Minerva University pursuing a Bachelor\'s degree in Computer Science. The program focuses on innovative learning approaches and global perspectives in technology education.'
+}
 
 load_dotenv()
 app = Flask(__name__)
@@ -86,3 +82,19 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html', title="MLH Fellow", url=os.getenv("URL"), hobbies=HOBBIES, experiences=EXPERIENCES)
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title="About Me - Ekene Azubuko", url=os.getenv("URL"))
+
+@app.route('/hobbies')
+def hobbies():
+    return render_template('hobbies.html', title="Hobbies - Ekene Azubuko", url=os.getenv("URL"), hobbies=HOBBIES)
+
+@app.route('/experience')
+def experience():
+    return render_template('experience.html', title="Experience & Education - Ekene Azubuko", url=os.getenv("URL"), experiences=EXPERIENCES)
+
+@app.route('/education')
+def education():
+    return render_template('education.html', title="Education - Ekene Azubuko", url=os.getenv("URL"), education=EDUCATION)

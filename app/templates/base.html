@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta property="og:title" content="Personal Portfolio" />
+    <meta property="og:description" content="My Personal Portfolio" />
+    <meta property="og:url" content="{{ url }}" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon" />
+    <title>{{ title }}</title>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <header class="nav-bar">
+      <div class="nav-content">
+        <a href="/">
+          <div class="nav-logo">
+            <h3>Ekene Azubuko</h3>
+          </div>
+        </a>
+        <ul>
+          <li><a href="/about">About Me</a></li>
+          <li><a href="/experience">Experience</a></li>
+          <li><a href="/education">Education</a></li>
+          <li><a href="/hobbies">Hobbies</a></li>
+        </ul>
+      </div>
+    </header>
+
+    {% block content %}{% endblock %} {% block scripts %}{% endblock %}
+  </body>
+</html>

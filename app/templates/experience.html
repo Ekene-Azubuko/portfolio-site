@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block content %}
+<section class="experience" id="experience">
+  <h1>Experience</h1>
+  <div class="experience-container">
+    {% for experience in experiences %}
+    <div class="experience-row {% if experience.reverse %}reverse{% endif %}">
+      <div class="experience-image">
+        <img src="{{ experience.image }}" alt="{{ experience.alt }}" />
+      </div>
+      <div class="experience-content">
+        <h2>{{ experience.title }}</h2>
+        <h3>{{ experience.company }}</h3>
+        <p class="experience-date">{{ experience.date }}</p>
+        {% for paragraph in experience.description %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

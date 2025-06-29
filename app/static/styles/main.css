@@ -221,17 +221,18 @@ body {
 /* Hobbies Container */
 .hobbies-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 50px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 40px 30px;
 }
 
 /* Ensure max 2 cards per row */
 @media (min-width: 768px) {
   .hobbies-container {
     grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
   }
 }
 
@@ -246,6 +247,7 @@ body {
   cursor: pointer;
   aspect-ratio: 16/10;
   min-height: 350px;
+  width: 100%;
 }
 
 .hobby-card:hover {
@@ -308,8 +310,8 @@ body {
 @media (max-width: 767px) {
   .hobbies-container {
     grid-template-columns: 1fr;
-    gap: 25px;
-    padding: 20px;
+    gap: 30px;
+    padding: 30px 20px;
   }
 
   .hobby-card {
@@ -324,8 +326,8 @@ body {
 
 @media (max-width: 480px) {
   .hobbies-container {
-    padding: 15px;
-    gap: 20px;
+    padding: 20px 15px;
+    gap: 25px;
   }
 
   .hobby-card {
@@ -505,19 +507,163 @@ body {
   margin: 0 auto;
 }
 
-.hobbies{
-  padding: 0px 20px;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+/* Education Section */
+.education {
+  padding: 60px 20px;
   background-color: #f8f9fa;
+  text-align: center;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.hobbies h1{
+.education h1 {
   font-size: 42px;
   font-weight: 700;
   color: #1264b0;
-  margin-bottom: 30px;
-  font-family: "Roboto", serif;  
+  margin-bottom: 50px;
+  font-family: "Roboto", serif;
 }
 
+.education-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.education-image {
+  padding: 40px;
+  background: linear-gradient(135deg, #1264b0, #1d539f);
+  text-align: center;
+}
+
+.education-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.education-content {
+  padding: 40px;
+  text-align: left;
+}
+
+.education-content h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1264b0;
+  margin-bottom: 8px;
+  font-family: "Roboto", serif;
+}
+
+.education-content h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+  font-family: "Roboto", serif;
+}
+
+.education-date {
+  font-size: 16px;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-family: "Roboto", serif;
+}
+
+.education-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  font-family: "Roboto", serif;
+}
+
+/* Responsive design for education section */
+@media (max-width: 768px) {
+  .education {
+    padding: 40px 15px;
+  }
+
+  .education h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
+  .education-card {
+    margin: 0 10px;
+  }
+
+  .education-image {
+    padding: 30px;
+  }
+
+  .education-image img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .education-content {
+    padding: 30px;
+  }
+
+  .education-content h2 {
+    font-size: 24px;
+  }
+
+  .education-content h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .education {
+    padding: 30px 10px;
+  }
+
+  .education h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+
+  .education-image {
+    padding: 25px;
+  }
+
+  .education-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .education-content {
+    padding: 25px;
+  }
+
+  .education-content h2 {
+    font-size: 22px;
+  }
+
+  .education-content h3 {
+    font-size: 16px;
+  }
+
+  .education-description {
+    font-size: 14px;
+  }
+}

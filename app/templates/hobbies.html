@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block content %}
+<section class="hobbies">
+  <h1>Hobbies</h1>
+  <div class="hobbies-container">
+    {% for hobby in hobbies %}
+    <div class="hobby-card">
+      <div class="card-image-container">
+        {% for image in hobby.images %}
+        <img
+          src="{{ image }}"
+          alt="{{ hobby.alt }}"
+          class="card-image {% if loop.first %}active{% endif %}"
+        />
+        {% endfor %}
+      </div>
+      <div class="card-overlay">
+        <h3>{{ hobby.name }}</h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".hobby-card");
+    cards.forEach((card) => {
+      const images = card.querySelectorAll(".card-image");
+      let currentImageIndex = 0;
+      function cycleImages() {
+        images[currentImageIndex].classList.remove("active");
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        images[currentImageIndex].classList.add("active");
+      }
+      setInterval(cycleImages, 3000);
+    });
+  });
+</script>
+{% endblock %}

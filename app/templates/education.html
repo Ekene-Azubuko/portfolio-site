@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block content %}
+<section class="education">
+  <h1>Education</h1>
+  <div class="education-card">
+    <div class="education-image">
+      <img
+        src="{{ education.badge_image }}"
+        alt="{{ education.school_name }}"
+      />
+    </div>
+    <div class="education-content">
+      <h2>{{ education.school_name }}</h2>
+      <h3>{{ education.degree }}</h3>
+      <p class="education-date">{{ education.date }}</p>
+      <p class="education-description">{{ education.description }}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
