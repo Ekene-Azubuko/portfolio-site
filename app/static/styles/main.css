@@ -114,14 +114,14 @@ body {
   background-repeat: no-repeat;
   backdrop-filter: blur(5px);
   /* background-color: #1d539f !important; */
+
   text-align: center;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Subtract navbar height */
-  /* margin-bottom: 50px; */
+  min-height: calc(100vh - 80px);
 }
 
 .profile h1 {
@@ -151,9 +151,9 @@ body {
 }
 
 .profile button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #1c539f;
   border-color: #1d539f;
-  color: #1d539f;
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -191,7 +191,12 @@ body {
   font-size: 50px;
   font-weight: 700;
 }
-
+.hobbies {
+  padding: 0px 20px;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+}
 .about-me {
   padding: 80px 20px;
   text-align: center;
@@ -199,7 +204,13 @@ body {
   margin: 0 auto;
   background-color: #f8f9fa;
 }
-
+.hobbies h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1264b0;
+  margin-bottom: 30px;
+  font-family: "Roboto", serif;
+}
 .about-me h1 {
   font-size: 42px;
   font-weight: 700;
@@ -207,7 +218,282 @@ body {
   margin-bottom: 30px;
   font-family: "Roboto", serif;
 }
+/* Hobbies Container */
+.hobbies-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+}
 
+/* Ensure max 2 cards per row */
+@media (min-width: 768px) {
+  .hobbies-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Hobby Card */
+.hobby-card {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  aspect-ratio: 16/10;
+  min-height: 350px;
+}
+
+.hobby-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Image Container */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.card-image.active {
+  opacity: 1;
+}
+
+/* Card Overlay */
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 25px 20px 20px 20px;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.hobby-card:hover .card-overlay {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 30px 20px 25px 20px;
+}
+
+.card-overlay h3 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+  font-family: "Roboto", serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .hobbies-container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 20px;
+  }
+
+  .hobby-card {
+    aspect-ratio: 4/3;
+    min-height: 280px;
+  }
+
+  .card-overlay h3 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hobbies-container {
+    padding: 15px;
+    gap: 20px;
+  }
+
+  .hobby-card {
+    min-height: 250px;
+  }
+
+  .card-overlay h3 {
+    font-size: 22px;
+  }
+
+  .card-overlay {
+    padding: 20px 15px 15px 15px;
+  }
+
+  .hobby-card:hover .card-overlay {
+    padding: 25px 15px 20px 15px;
+  }
+}
+
+/* Experience Section */
+.experience {
+  padding: 60px 20px;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.experience h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1264b0;
+  margin-bottom: 50px;
+  font-family: "Roboto", serif;
+}
+
+.experience-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experience-row {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 80px;
+  padding: 20px;
+}
+
+.experience-row:last-child {
+  margin-bottom: 0;
+}
+
+.experience-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.experience-image {
+  flex: 0 0 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.experience-image:hover {
+  transform: translateY(-5px);
+}
+
+.experience-image img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.experience-content {
+  flex: 1;
+  text-align: left;
+  padding: 20px;
+}
+
+.experience-content h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1264b0;
+  margin-bottom: 8px;
+  font-family: "Roboto", serif;
+}
+
+.experience-content h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+  font-family: "Roboto", serif;
+}
+
+.experience-date {
+  font-size: 16px;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-family: "Roboto", serif;
+}
+
+.experience-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 15px;
+  font-family: "Roboto", serif;
+}
+
+/* Responsive design for experience section */
+@media (max-width: 768px) {
+  .experience-row,
+  .experience-row.reverse {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .experience-image {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .experience-content {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .experience-content h2 {
+    font-size: 24px;
+  }
+
+  .experience-content h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .experience {
+    padding: 40px 15px;
+  }
+
+  .experience h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
+  .experience-row {
+    margin-bottom: 50px;
+    padding: 10px;
+  }
+
+  .experience-content h2 {
+    font-size: 22px;
+  }
+
+  .experience-content h3 {
+    font-size: 16px;
+  }
+
+  .experience-content p {
+    font-size: 14px;
+  }
+}
 .about-me p {
   font-size: 18px;
   line-height: 1.8;
@@ -234,3 +520,4 @@ body {
   margin-bottom: 30px;
   font-family: "Roboto", serif;  
 }
+
