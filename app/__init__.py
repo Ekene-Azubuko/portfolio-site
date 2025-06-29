@@ -98,3 +98,7 @@ def experience():
 @app.route('/education')
 def education():
     return render_template('education.html', title="Education - Ekene Azubuko", url=os.getenv("URL"), education=EDUCATION)
+
+@app.route('/map')
+def map():
+    return render_template('map.html', title="Travel Map - Ekene Azubuko", url=os.getenv("URL"))
