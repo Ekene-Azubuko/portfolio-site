@@ -113,7 +113,6 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   backdrop-filter: blur(5px);
-  /* background-color: #1d539f !important; */
 
   text-align: center;
   flex: 1;
