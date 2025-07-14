@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block content %}
+<form action="" method="post">
+  <input type="text" name="name" id="name" placeholder="Enter name" />
+  <input type="email" name="email" id="email" placeholder="Enter email" />
+  <textarea name="content" id="content" placeholder="Enter content"></textarea>
+  <button type="submit">Post</button>
+</form>
+<section class="timeline">
+  <h2>See what others are saying</h2>
+  <div id="posts-container"></div>
+</section>
+{% endblock %} {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    async function loadposts() {
+      try {
+        const response = await fetch("/api/timeline_post");
+        const data = await response.json();
+        const posts = data.timeline_posts;
+        const container = document.getElementById("posts-container");
+        container.innerHTML = "";
+        posts.forEach((post) => {
+          const hashedEmail = CryptoJS.SHA256(post.email).toString(
+            CryptoJS.enc.Hex
+          );
+          const postDiv = document.createElement("div");
+          postDiv.classList.add("timeline-post");
+          postDiv.innerHTML = `
+    <div class="post-header">
+        <img class="profile-img" src="https://gravatar.com/avatar/${hashedEmail}" alt="profile photo">
+        <div>
+            <h2><span class="descriptor">👤 Name:</span> ${post.name}</h2>
+            <p class="post-email"><span class="descriptor">✉️ Email:</span> ${post.email}</p>
+        </div>
+    </div>
+    <p><span class="descriptor">📝 Post:</span> ${post.content}</p>
+`;
+          container.appendChild(postDiv);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadposts();
+    const form = document.querySelector("form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const response = await fetch("/api/timeline_post", {
+          method: "POST",
+          body: data,
+        });
+        if (response.ok) {
+          console.log("Successful post req");
+          form.reset();
+          loadposts();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+</script>
+{% endblock %}
