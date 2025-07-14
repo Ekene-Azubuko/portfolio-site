@@ -88,10 +88,7 @@ mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
             host=os.getenv("MYSQL_HOST"),
             port=3306
         )
-print("DB:", os.getenv("MYSQL_DATABASE"))
-print("USER:", os.getenv("MYSQL_USER"))
-print("PWD:", os.getenv("MYSQL_PASSWORD"))
-print("HOST:", os.getenv("MYSQL_HOST"))
+
 
 print(mydb)
 
@@ -130,6 +127,9 @@ def education():
 @app.route('/map')
 def map():
     return render_template('map.html', title="Travel Map - Ekene Azubuko", url=os.getenv("URL"))
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html', title="Timeline - Ekene Azubuko", url=os.getenv("URL"))
 
 @app.route('/api/timeline_post', methods=['POST'])
 def post_time_line_post():
