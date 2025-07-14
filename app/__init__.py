@@ -90,8 +90,6 @@ mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
         )
 
 
-print(mydb)
-
 class TimelinePost(Model):
     name = CharField()
     email = CharField()
@@ -133,22 +131,27 @@ def timeline():
 
 @app.route('/api/timeline_post', methods=['POST'])
 def post_time_line_post():
-    name = request.form['name']
-    email = request.form['email']
-    content = request.form['content']
-    timeline_post = TimelinePost.create(name=name, email=email, content=content)
-    
-    return model_to_dict(timeline_post)
+    try:
+        name = request.form['name']
+        email = request.form['email']
+        content = request.form['content']
+        timeline_post = TimelinePost.create(name=name, email=email, content=content)
+        return model_to_dict(timeline_post)
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 400
 
 @app.route('/api/timeline_post', methods=['GET'])
 def get_time_line_post():
-    return {
-        'timeline_posts' : [
-            model_to_dict(p)
-            for p in 
-            TimelinePost.select().order_by(TimelinePost.created_at.desc())
-        ]
-    }
+    try:
+        return {
+            'timeline_posts' : [
+                model_to_dict(p)
+                for p in 
+                TimelinePost.select().order_by(TimelinePost.created_at.desc())
+            ]
+        }
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/timeline_post/<id>', methods=['DELETE'])
 def delete_time_line_post(id):
