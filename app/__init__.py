@@ -105,8 +105,8 @@ class TimelinePost(Model):
     class Meta:
         database = mydb
 
-#mydb.connect()
-#mydb.create_tables([TimelinePost])
+mydb.connect()
+mydb.create_tables([TimelinePost])
 
 @app.route('/')
 def index():
