@@ -1,4 +1,5 @@
 import os
+import re
 import datetime
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
@@ -82,11 +83,16 @@ EDUCATION = {
 load_dotenv(dotenv_path='../example.env')
 app = Flask(__name__)
 
-mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
-            user=os.getenv("MYSQL_USER"),
-            password=os.getenv("MYSQL_PASSWORD"),
-            host=os.getenv("MYSQL_HOST"),
-            port=3306
+if os.environ.get("TESTING") == "true":
+    print("Running in test mode")
+    mydb = SqliteDatabase('file:memory?mode=memory&cache=shared', uri=True)
+else:
+    mydb = MySQLDatabase(
+        os.getenv("MYSQL_DATABASE"),
+        user=os.getenv("MYSQL_USER"),
+        password=os.getenv("MYSQL_PASSWORD"),
+        host=os.getenv("MYSQL_HOST"),
+        port=3306
         )
 
 
@@ -99,8 +105,8 @@ class TimelinePost(Model):
     class Meta:
         database = mydb
 
-mydb.connect()
-mydb.create_tables([TimelinePost])
+#mydb.connect()
+#mydb.create_tables([TimelinePost])
 
 @app.route('/')
 def index():
@@ -129,12 +135,49 @@ def map():
 def timeline():
     return render_template('timeline.html', title="Timeline - Ekene Azubuko", url=os.getenv("URL"))
 
+# Name and Email Regex to better handle user inputs with validation
+NAME_REGEX = re.compile(r'^[a-zA-Z\s\'\-\.]+$') # letters, spaces, apostrophes, hyphens, dots
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+
 @app.route('/api/timeline_post', methods=['POST'])
 def post_time_line_post():
     try:
         name = request.form['name']
         email = request.form['email']
         content = request.form['content']
+        
+        # get all the errors
+        errors = []
+        if not name:
+            errors.append("Name is required")
+        elif len(name) < 2:
+            errors.append("Name must be at least 2 characters long")
+        elif len(name) > 50:
+            errors.append("Name must be less than 50 characters")
+        elif not NAME_REGEX.match(name):
+            errors.append("Name can only contain letters, spaces, apostrophe, hyphens, and dots")
+        
+        if not email:
+            errors.append("Email is required")
+        elif not EMAIL_REGEX.match(email):
+            errors.append("Please enter a valid email")
+        elif len(email) > 100:
+            errors.append("Email must be less than 100 characters")
+        
+        # validate content
+        if not content.strip():
+            errors.append("Content is required")
+        elif len(content) < 1:
+            errors.append("Content cannot be empty")
+        
+
+        if errors:
+            return jsonify({
+                'succes': False,
+                'error': '; '.join(errors)
+            }), 400
+        
+
         timeline_post = TimelinePost.create(name=name, email=email, content=content)
         return model_to_dict(timeline_post)
     except Exception as e:
