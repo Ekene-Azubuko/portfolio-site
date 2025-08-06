@@ -19,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.6.8'
+          python-version: '3.12'
 
       - name: Setup Python Virtual Environment
         run: python -m venv python3-virtualenv
@@ -28,4 +28,4 @@ jobs:
         run: python3-virtualenv/bin/pip install -r requirements.txt
 
       - name: Run Tests
-        run: ./run_test.sh
+        run: sudo sh ./run_test.sh
