@@ -30,7 +30,7 @@ jobs:
       
       - name: Deploy site
         run: |
-          ssh my-vps "cd '${{ secrets.PROJECT_ROOT }}' \
+          ssh my-vps "cd ${{ secrets.PROJECT_ROOT }} \
             && sudo apt-get update -y \
             && sudo apt-get install -y dos2unix \
             && dos2unix ./redeploy-site.sh \
