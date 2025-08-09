@@ -29,4 +29,10 @@ jobs:
           SSH_IP: ${{ secrets.SSH_IP }}
       
       - name: Deploy site
-        run: ssh my-vps 'cd ${{ secrets.PROJECT_ROOT }} && sudo sh ./redeploy-site.sh'
+        run: |
+          ssh my-vps "cd '${{ secrets.PROJECT_ROOT }}' \
+            && sudo apt-get update -y \
+            && sudo apt-get install -y dos2unix \
+            && dos2unix ./redeploy-site.sh \
+            && chmod +x ./redeploy-site.sh \
+            && sudo bash ./redeploy-site.sh"
