@@ -7,9 +7,36 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Tests
+    env:
+      TESTING: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Setup Python Virtual Environment
+        run: python -m venv python3-virtualenv
+
+      - name: Install Dependencies
+        run: python3-virtualenv/bin/pip install -r requirements.txt
+
+      - name: Run Tests
+        run: sudo sh ./run_test.sh
+      
+      - name: Notify on failure
+        if: failure()
+        run: curl -s -X POST "${{ secrets.DISCORD_WEBHOOK }}" -d "content=🚨 Deployment failed"
   deploy:
     name: "Deploy to VPS"
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Configure SSH
         run: |
@@ -34,3 +61,6 @@ jobs:
             && dos2unix ./redeploy-site.sh \
             && chmod +x ./redeploy-site.sh \
             && sudo sh ./redeploy-site.sh"
+      
+      - name: Notify on success
+        run: curl -s -X POST "${{ secrets.DISCORD_WEBHOOK }}" -d "content=🚀 Deployment Successful"
