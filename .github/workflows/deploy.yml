@@ -66,5 +66,4 @@ jobs:
         run: curl -s -X POST "${{ secrets.DISCORD_WEBHOOK }}" -d "content=🚀 Deployment Successful"
 
       - name: Print container status
-        run: |
-          ssh my-vps "cd ${{ secrets.PROJECT_ROOT }} && docker-compose ps"
+        run: ssh my-vps "cd ${{ secrets.PROJECT_ROOT }} && docker-compose ps"
