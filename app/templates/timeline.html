@@ -1,18 +1,44 @@
 {% extends "base.html" %} {% block content %}
-<form action="" method="post">
-  <input type="text" name="name" id="name" placeholder="Enter name" />
-  <input type="email" name="email" id="email" placeholder="Enter email" />
-  <textarea name="content" id="content" placeholder="Enter content"></textarea>
-  <button type="submit">Post</button>
+<form action="" method="post" id="timeline-form">
+  <input type="text" name="name" id="name" placeholder="Enter name" required />
+  <input type="email" name="email" id="email" placeholder="Enter email" required />
+  <textarea name="content" id="content" placeholder="Enter content" required></textarea>
+  <button type="submit" id="submit-btn">
+    <span class="btn-text">Post</span>
+    <span class="btn-loading" style="display: none;">
+      <div class="spinner"></div>
+      <span>Posting...</span>
+    </span>
+  </button>
 </form>
+
 <section class="timeline">
   <h2>See what others are saying</h2>
   <div id="posts-container"></div>
 </section>
+
+<!-- Loading Post Template -->
+<div id="loading-post-template" style="display: none;">
+  <div class="timeline-post loading-post">
+    <div class="post-header">
+      <div class="profile-img-placeholder">
+        <div class="spinner small"></div>
+      </div>
+      <div>
+        <div class="loading-line name-line"></div>
+        <div class="loading-line email-line"></div>
+      </div>
+    </div>
+    <div class="loading-line content-line"></div>
+  </div>
+</div>
+
 {% endblock %} {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    let isSubmitting = false;
+    
     async function loadposts() {
       try {
         const response = await fetch("/api/timeline_post");
@@ -42,25 +68,109 @@
         console.error(error);
       }
     }
+
+    function showLoadingPost() {
+      const container = document.getElementById("posts-container");
+      const loadingTemplate = document.getElementById("loading-post-template");
+      const loadingPost = loadingTemplate.querySelector(".loading-post").cloneNode(true);
+      loadingPost.id = "current-loading-post";
+      container.insertBefore(loadingPost, container.firstChild);
+    }
+
+    function removeLoadingPost() {
+      const loadingPost = document.getElementById("current-loading-post");
+      if (loadingPost) {
+        loadingPost.remove();
+      }
+    }
+
+    function setFormLoading(loading) {
+      const submitBtn = document.getElementById("submit-btn");
+      const btnText = submitBtn.querySelector(".btn-text");
+      const btnLoading = submitBtn.querySelector(".btn-loading");
+      
+      if (loading) {
+        btnText.style.display = "none";
+        btnLoading.style.display = "flex";
+        submitBtn.disabled = true;
+      } else {
+        btnText.style.display = "inline";
+        btnLoading.style.display = "none";
+        submitBtn.disabled = false;
+      }
+    }
+
     loadposts();
-    const form = document.querySelector("form");
+    
+    const form = document.getElementById("timeline-form");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      
+      if (isSubmitting) return;
+      
+      isSubmitting = true;
+      setFormLoading(true);
+      showLoadingPost();
+      
       const data = new FormData(form);
+      
       try {
         const response = await fetch("/api/timeline_post", {
           method: "POST",
           body: data,
         });
+        
         if (response.ok) {
-          console.log("Successful post req");
+          const result = await response.json();
+          console.log("Successful post req", result);
+          
+          // Remove loading post and refresh the posts
+          removeLoadingPost();
+          await loadposts();
+          
+          // Reset form
           form.reset();
-          loadposts();
+          
+          // Show success message
+          showNotification("Post submitted successfully!", "success");
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to submit post");
         }
       } catch (error) {
         console.error(error);
+        
+        // Remove loading post
+        removeLoadingPost();
+        
+        // Show error message
+        showNotification(error.message || "Failed to submit post. Please try again.", "error");
+      } finally {
+        isSubmitting = false;
+        setFormLoading(false);
       }
     });
+
+    function showNotification(message, type) {
+      // Remove existing notifications
+      const existingNotification = document.querySelector(".notification");
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
+      const notification = document.createElement("div");
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 5000);
+    }
   });
 </script>
 {% endblock %}

@@ -135,6 +135,10 @@ def map():
 def timeline():
     return render_template('timeline.html', title="Timeline - Ekene Azubuko", url=os.getenv("URL"))
 
+@app.route('/projects')
+def projects():
+    return render_template('projects.html', title="Projects - Ekene Azubuko", url=os.getenv("URL"))
+
 # Name and Email Regex to better handle user inputs with validation
 NAME_REGEX = re.compile(r'^[a-zA-Z\s\'\-\.]+$') # letters, spaces, apostrophes, hyphens, dots
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
